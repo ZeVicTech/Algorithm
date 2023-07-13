@@ -17,11 +17,11 @@ while start<=end:
 
     if total > m:
         start = mid + 1
-        mid = (start+end)//2
     elif total < m:
         end = mid - 1
-        mid = (start+end)//2
     else:
         break
+
+    mid = (start+end)//2
 
 print(mid) 
