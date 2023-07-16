@@ -2,15 +2,15 @@ def solution(numbers):
     answer = []
     for i in range(len(numbers)):
         x = numbers[i]
-        temp = 1
+        target = 1
         while True:
             if x%2 == 0:
-                if temp == 1:
-                    answer.append(numbers[i]+temp)
+                if target == 1:
+                    answer.append(numbers[i]+target)
                 else:
-                    answer.append(numbers[i]+temp-temp//2)
+                    answer.append(numbers[i]+target-target//2)
                 break
             x = x//2
-            temp *= 2
+            target *= 2
 
     return answer
