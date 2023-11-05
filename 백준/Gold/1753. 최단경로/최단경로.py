@@ -24,7 +24,7 @@ def dijkstra(start):
 
         for node in graph[now]:
             cost = dist + node[1]
-            if cost > distance[node[0]]:
+            if cost >= distance[node[0]]:
                 continue
             distance[node[0]] = cost
             heapq.heappush(q,(cost,node[0]))
