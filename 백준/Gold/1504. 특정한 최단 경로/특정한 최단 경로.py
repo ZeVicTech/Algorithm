@@ -35,15 +35,10 @@ def dijkstra(start,end):
 
     return distance[end]
 
-dist_1 = dijkstra(1,v1)
-dist_2 = dijkstra(v1,v2)
-dist_3 = dijkstra(v2,n)
-dist_4 = dijkstra(1,v2)
-dist_5 = dijkstra(v1,n)
+route_1 = dijkstra(1,v1)+dijkstra(v1,v2)+dijkstra(v2,n)
+route_2 = dijkstra(1,v2)+dijkstra(v1,v2)+dijkstra(v1,n)
 
-total = min(dist_1+dist_2+dist_3, dist_4+dist_2+dist_5)
 
-if dist_1 == INF or dist_2 == INF or dist_3 == INF or dist_4 == INF or dist_5 == INF:
-    print(-1)
-else:
-    print(total)
+result = min(route_1, route_2)
+
+print(result if result < INF else -1)
