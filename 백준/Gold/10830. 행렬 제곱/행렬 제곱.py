@@ -5,23 +5,19 @@ n, b = map(int, input().split())
 matrix = [list(map(int, input().split())) for _ in range(n)]
 
 def sqrt_matrix(num):
-
     # 재귀 종료조건
     if num == 1:
         return matrix
     
-    remain = num % 2
-    num = num//2
-    temp = sqrt_matrix(num)
-    result = mul_matrix(temp, temp)
+    temp = sqrt_matrix(num//2)
 
-    if remain == 0:
-        return result
+    if num % 2:
+        return mul_matrix(mul_matrix(temp,temp), matrix)
     else:
-        return mul_matrix(result, matrix)
+        return mul_matrix(temp,temp)
 
 def mul_matrix(matrix_a, matrix_b):
-    result = [[0]*n for _ in range(n)]
+    result = [[0] * n for _ in range(n)]
     for i in range(n):
         for j in range(n):
             temp = 0
@@ -34,5 +30,5 @@ result = sqrt_matrix(b)
 
 for i in range(n):
     for j in range(n):
-        print(result[i][j]%1000, end=' ')
+        print(result[i][j] % 1000, end=' ')
     print()
