@@ -1,44 +1,51 @@
 import sys
-from collections import deque 
-N, L, R = map(int, sys.stdin.readline().split())
-pan = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
-# 연합이 될 수 있는지?를 확인하고 만약 된다면 하나로 묶어 인구수/칸의 개수를 구하고 각 칸에 값을 넣는다.
-# 이를 연합이 될 수 없을 때까지 반복한다.
-# 그 때 소요된 날짜를 출력한다.
+from collections import deque
+from copy import deepcopy
+input = sys.stdin.readline
+
+n, l, r = map(int, input().split())
+graph = [list(map(int, input().split())) for _ in range(n)]
+
 q = deque()
-dx = [1,0,-1,0]
-dy = [0,1,0,-1]
-def bfs(x,y):
-    q.append((x,y))
-    union = []
-    union.append((x,y))
+dx = [1, 0, -1, 0]
+dy = [0, 1, 0, -1]
+
+def bfs(a, b, visited, graph):
+    q.append((a,b))
+    visited[a][b] = 1
+    union = [(a,b)]
+    total = graph[a][b]
     while q:
-        a,b = q.popleft()
+        x, y = q.popleft()
         for i in range(4):
-            na = a + dx[i]
-            nb = b + dy[i]
-            if na>=N or nb>=N or nb<0 or na<0 or visited[na][nb]==1:
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if not(0 <= nx < n and 0 <= ny < n):
                 continue
-            if R>=abs(pan[a][b]-pan[na][nb])>=L:
-                visited[na][nb] = 1
-                q.append((na,nb))
-                union.append((na,nb))
-    if len(union)<=1:
-        return 0
-    result=sum(pan[a][b] for a,b in union)//len(union)
-    for a,b in union:
-        pan[a][b] = result
-    return 1
+            if visited[nx][ny] == 1:
+                continue
+            if not(l <= abs(graph[x][y] - graph[nx][ny]) <= r):
+                continue
+            q.append((nx, ny))
+            visited[nx][ny] = 1
+            union.append((nx,ny))
+            total += graph[nx][ny]
+
+    return union, total//len(union)
+
 day = 0
-while 1:
-    stop = 0
-    visited = [[0]*N for _ in range(N)]
-    for i in range(N):
-        for j in range(N):
-            if visited[i][j] == 0:
-                visited[i][j] = 1
-                stop += bfs(i,j)
-    if stop==0:
+while True:
+    visited = [[0 for _ in range(n)] for _ in range(n)]
+    cnt = 0
+    for i in range(n):
+        for j in range(n):
+            if visited[i][j] == 1:
+                continue
+            cnt += 1
+            union, population = bfs(i, j, visited, graph)
+            for x,y in union:
+                graph[x][y] = population
+    if cnt == n*n:
+        print(day)
         break
     day += 1
-print(day)
