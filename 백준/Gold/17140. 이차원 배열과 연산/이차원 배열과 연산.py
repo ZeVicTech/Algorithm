@@ -20,7 +20,6 @@ def calculate(arr):
     temp.sort(key = lambda x: (x[1],x[0]))
     temp = list(itertools.chain(*temp))
     arr = temp[:100]
-    # print(arr)
     
     return len(arr), arr
 
@@ -46,14 +45,9 @@ while True:
     for i in range(len(arr)):
         arr_len, arr[i] = calculate(arr[i])
         max_len = max(arr_len, max_len)
-    # pprint(arr)
     for i in range(len(arr)):
-        for _ in range(max_len - len(arr[i])):
-            arr[i].append(0)
+        arr[i] += [0]*(max_len - len(arr[i]))
 
     if flag == 1:
         flag = 0
-        arr = [list(row) for row in zip(*arr)]
-
-    # pprint(arr)
-    
+        arr = [list(row) for row in zip(*arr)]    
