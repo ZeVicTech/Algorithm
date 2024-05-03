@@ -7,17 +7,15 @@ INF = int(1e9)
 def dijkstra(start):
     q = []
     heapq.heappush(q, (0, start))
-
+    distance[start] = 0
     while q:
         dist, now = heapq.heappop(q)
-        if distance[now] < dist:
-            continue
-        distance[now] = dist
-        for node in graph[now]:
-            if distance[node[0]] <= node[1] + dist:
-                continue
-            distance[node[0]] = node[1] + dist
-            heapq.heappush(q, (distance[node[0]], node[0]))
+        if distance[now] == dist:
+            for node in graph[now]:
+                if distance[node[0]] <= node[1] + dist:
+                    continue
+                distance[node[0]] = node[1] + dist
+                heapq.heappush(q, (distance[node[0]], node[0]))
 
 t = int(input())
 
