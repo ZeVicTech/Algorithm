@@ -1,5 +1,5 @@
 import sys
-inpyt = sys.stdin.readline
+input = sys.stdin.readline
 
 n, m = map(int, input().split())
 memo = set(input().rstrip() for _ in range(n))
