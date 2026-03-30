@@ -1,29 +1,35 @@
 import sys
 input = sys.stdin.readline
 
-r, c = map(int, input().rstrip().split())
-graph = [input().rstrip() for _ in range(r)]
-alphabet = [0 for _ in range(26)]
-dx = [0, 1, 0, -1]
-dy = [1, 0, -1, 0]
+def dfs(r, c, visited, cnt, board, R, C):
+    result = cnt
 
-def dfs(position):
-    global answer
-    x, y = position
-    alphabet[ord(graph[x][y])-ord("A")] = 1
-    answer = max(sum(alphabet), answer)
+    dr = [0, 1, 0, -1]
+    dc = [1, 0, -1 ,0]
+
     for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
+        nr = r + dr[i]
+        nc = c + dc[i]
+        if 0 > nr or nr >= R or 0 > nc or nc >= C:
+            continue
 
-        if (0 > nx or nx > r-1) or (0 > ny or ny > c-1):
+        bit = bits[nr][nc]
+        if bit & visited:
             continue
-        if alphabet[ord(graph[nx][ny])-ord("A")]:
-            continue
-        dfs((nx, ny))
-    alphabet[ord(graph[x][y])-ord("A")] = 0
+        result = max(result ,dfs(nr, nc, bit | visited, cnt + 1, board, R, C))
+
+    return result
+
+if __name__ == "__main__":
+    R, C = map(int, input().split())
+    board = []
+
+    for i in range(R):
+        temp = input().rstrip()
+        board.append(temp)
         
+    bits = [[1 << (ord(board[i][j]) - ord('A')) for j in range(C)] for i in range(R)]
+    visited = 1 << (ord(board[0][0]) - ord('A'))
+    result = dfs(0, 0, visited, 1, board, R, C)
 
-answer = 0
-dfs((0,0))
-print(answer)
+    print(result)
